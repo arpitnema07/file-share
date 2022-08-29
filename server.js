@@ -32,6 +32,10 @@ app.use(express.json());
 connectDb();
 
 // Routes
+
+app.get("/", (req, res) => {
+  res.send("Connected");
+});
 app.use("/api/upload", uploadR);
 
 app.use("/api/files", showR);
