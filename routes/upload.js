@@ -43,9 +43,8 @@ uploadR.post("/", (req, res) => {
     });
 
     const response = await file.save();
-
     return res.json({
-      file: `${process.env.URL}/files/${response.uuid}`,
+      file: `${req.protocol + "://" + req.get("host")}/files/${response.uuid}`,
     });
   });
 });

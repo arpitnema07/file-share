@@ -13,7 +13,9 @@ showR.get("/:uuid", async (req, res) => {
       uuid: file.uuid,
       filename: file.filename,
       size: file.size,
-      downloadLink: `${process.env.URL}/api/download/${file.uuid}`,
+      downloadLink: `${req.protocol + "://" + req.get("host")}/api/download/${
+        file.uuid
+      }`,
     });
   } catch (error) {
     return res.json({ error: error });
