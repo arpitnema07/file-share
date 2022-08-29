@@ -5,7 +5,7 @@ dotenv.config();
 function connectDb() {
   // Database connection
 
-  mongoose.connect(process.env.MONGO_CONNECTION_URL, {
+  mongoose.connect(process.env.DATABASE_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
