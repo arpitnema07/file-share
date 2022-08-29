@@ -48,8 +48,6 @@ uploadR.post("/", (req, res) => {
       file: `${process.env.URL}/files/${response.uuid}`,
     });
   });
-
-  // Response -> Link
 });
 
 export default uploadR;
