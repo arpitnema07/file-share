@@ -1,9 +1,9 @@
 import express from "express";
 import File from "../models/file.js";
 
-const showR = express.Router();
+const showFile = express.Router();
 
-showR.get("/:uuid", async (req, res) => {
+showFile.get("/:uuid", async (req, res) => {
   try {
     const file = await File.findOne({ uuid: req.params.uuid });
     if (!file) {
@@ -22,4 +22,4 @@ showR.get("/:uuid", async (req, res) => {
   }
 });
 
-export default showR;
+export default showFile;

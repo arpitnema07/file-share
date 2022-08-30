@@ -1,10 +1,11 @@
 import express from "express";
 import multer from "multer";
+import { GridFsStorage } from "multer-gridfs-storage";
 import path from "path";
 import File from "../models/file.js";
 import crypto from "crypto";
 
-const uploadR = express.Router();
+const uploadFile = express.Router();
 
 let storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, "uploads/"),
@@ -21,7 +22,7 @@ let upload = multer({
   limits: { fileSize: 100000000 },
 }).single("upload-file");
 
-uploadR.post("/", (req, res) => {
+uploadFile.post("/", (req, res) => {
   // Store File
   upload(req, res, async (err) => {
     // Validate Request
@@ -49,4 +50,4 @@ uploadR.post("/", (req, res) => {
   });
 });
 
-export default uploadR;
+export default uploadFile;
