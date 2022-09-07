@@ -18,10 +18,15 @@ login.post("/", async (req, res) => {
     var iterations = 10000;
     var keylen = 64;
 
-    var hashPass = (
-      await pbkdf2Sync(pass, user.salt, iterations, keylen, "sha512", (err) => {
+    var hashPass = pbkdf2Sync(
+      pass,
+      user.salt,
+      iterations,
+      keylen,
+      "sha512",
+      (err) => {
         if (err) throw err;
-      })
+      }
     ).toString("hex");
     if (hashPass == user.hashPass) {
       //Login Success

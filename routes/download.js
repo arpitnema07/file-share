@@ -1,47 +1,35 @@
 import express from "express";
-import File from "../models/file.js";
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import mongoose from "mongoose";
+import { conn } from "../config/db.js";
+import Grid from "gridfs-stream";
 
 const download = express.Router();
 
-download.get("/:uuid", async (req, res) => {
-  const file = await File.findOne({ uuid: req.params.uuid });
-  if (!file) {
-    return res.json({ error: "Link Expired" });
-  }
-  const filePath = `${__dirname}/../${file.path}`;
-  res.download(filePath);
+download.get("/:filename", async (req, res) => {
+  const gfs = Grid(conn.db, mongoose.mongo);
 
-  // const gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
-  //   bucketName: "profileImages",
-  // });
-  // const gfs = Grid(conn.db, mongoose.mongo);
-  // gfs.collection("profileImages").findOne({ _id: id }, (err, file) => {
-  //   if (err) {
-  //     return res.status(400).send(err);
-  //   } else if (!file) {
-  //     return res.status(404).send("Error on the database looking for the file.");
-  //   } else {
-  //     res.set("Content-Type", file.contentType);
-  //     res.set(
-  //       "Content-Disposition",
-  //       'attachment; filename="' + file.filename + '"'
-  //     );
+  gfs.collection("profileImages");
 
-  //     var readstream = gridfsBucket.openDownloadStream({
-  //       _id: "630dfb862662876a43d2f66b",
-  //     });
+  const gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
+    bucketName: "profileImages",
+  });
+  gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+    // Check if file
+    if (!file || file.length === 0) {
+      return res.status(404).json({
+        err: "No file exists",
+      });
+    }
+    // Download
+    res.set("Content-Type", file.contentType);
+    res.set(
+      "Content-Disposition",
+      'attachment; filename="' + file.filename + '"'
+    );
 
-  //     readstream.on("error", function (err) {
-  //       res.end();
-  //     });
-  //     readstream.pipe(res);
-  //   }
-  // });
+    const readstream = gridfsBucket.openDownloadStream(file._id);
+    readstream.pipe(res);
+  });
 });
 
 export default download;

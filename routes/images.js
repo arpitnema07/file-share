@@ -5,32 +5,30 @@ import Grid from "gridfs-stream";
 
 const images = express.Router();
 
-images.get("/:id", async (req, res) => {
-  const id = req.params.id;
+images.get("/:filename", async (req, res) => {
+  const gfs = Grid(conn.db, mongoose.mongo);
+
+  gfs.collection("profileImages");
+
   const gridfsBucket = new mongoose.mongo.GridFSBucket(conn.db, {
     bucketName: "profileImages",
   });
-  const gfs = Grid(conn.db, mongoose.mongo);
-  gfs.collection("profileImages").findOne({ _id: id }, (err, file) => {
-    if (err) {
-      return res.status(400).send(err);
-    } else if (!file) {
-      return res
-        .status(404)
-        .send("Error on the database looking for the file.");
-    } else {
-      res.set("Content-Type", file.contentType);
-      res.set(
-        "Content-Disposition",
-        'attachment; filename="' + file.filename + '"'
-      );
-      var readstream = gridfsBucket.openDownloadStream({
-        _id: id,
+  gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+    // Check if file
+    if (!file || file.length === 0) {
+      return res.status(404).json({
+        err: "No file exists",
       });
-      readstream.on("error", function (err) {
-        res.end();
-      });
+    }
+    // Check if image
+    if (file.contentType === "image/jpeg" || file.contentType === "image/png") {
+      // Read output to browser
+      const readstream = gridfsBucket.openDownloadStream(file._id);
       readstream.pipe(res);
+    } else {
+      res.status(404).json({
+        err: "Not an image",
+      });
     }
   });
 });
