@@ -11,7 +11,6 @@
   "author": "arpit",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.20.0",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "gridfs-stream": "^1.1.1",
