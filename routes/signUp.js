@@ -53,7 +53,7 @@ signUp.post("/", (req, res) => {
     if (!req.file) {
       imageUrl = "0";
     } else {
-      imageUrl = process.env.URL + "/api/images/" + req.file.filename;
+      imageUrl = process.env.URL + "/api/download/" + req.file.filename;
     }
 
     //
