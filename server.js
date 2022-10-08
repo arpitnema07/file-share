@@ -8,6 +8,7 @@ import signUp from "./routes/signUp.js";
 import login from "./routes/login.js";
 import logout from "./routes/logout.js";
 import images from "./routes/images.js";
+import uploadProfile from "./routes/uploadProfile.js";
 
 const app = express();
 
@@ -49,6 +50,9 @@ app.use("/api/logout", logout);
 
 /** 9. Profile Images Route */
 app.use("/api/images", images);
+
+/** 10. Upload Profile Route */
+app.use("/api/uploadProfile", uploadProfile);
 
 function normalizePort(val) {
   const port = parseInt(val, 10);
