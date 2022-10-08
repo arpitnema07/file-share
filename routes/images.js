@@ -21,7 +21,7 @@ images.get("/:filename", async (req, res) => {
       });
     }
     // Check if image
-    if (file.contentType === "image/*") {
+    if (file.contentType == "image/*") {
       // Read output to browser
       const readstream = gridfsBucket.openDownloadStream(file._id);
       readstream.pipe(res);
