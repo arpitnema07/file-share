@@ -1,20 +1,17 @@
 import dotenv from "dotenv";
 import express from "express";
-import path from "path";
-import { GridFsStorage } from "multer-gridfs-storage";
 import crypto, { pbkdf2Sync } from "crypto";
-import multer from "multer";
 import User from "../models/user.js";
+import ErrorRes from "../models/error_res.js";
+import UserRes from "../models/user_res.js";
+import { HASH, ITERATIONS, KEYLEN } from "../utils/constants.js";
 
 dotenv.config();
 const signUp = express.Router();
 
 // Handling Sign Up Route
 signUp.post("/", async (req, res) => {
-  // getting email,username,pass and checking them
-
-  console.log("Body");
-  console.log(req.body);
+  // getting email, username, pass and checking them
   const { email, username, pass } = req.body;
   if (
     email == null ||
@@ -24,36 +21,31 @@ signUp.post("/", async (req, res) => {
     pass == null ||
     pass == ""
   ) {
-    return res.json({
-      status: false,
-      response: "Required fields are missing.",
-    });
+    return res.status(400).json(new ErrorRes("Required fields are missing."));
   }
 
-  //
-  const _id = crypto.randomUUID();
+  const _id = await crypto.randomUUID();
   try {
     const user = await User.find({ email: email });
     if (user.length > 0) {
-      return res.json({
-        status: false,
-        response: "User exist with the given Email, Please Login.",
+      return res.status(400).json({
+        message: "User exist with the given Email, Please Login.",
       });
     } else {
       const salt = crypto.randomBytes(128).toString("base64");
       // Implementing pbkdf2 with all its parameters
-      var iterations = 10000;
-      var keylen = 64;
-
       var hashPass = (
         await pbkdf2Sync(
           pass,
           salt,
-          iterations,
-          keylen,
-          "sha512",
+          ITERATIONS,
+          KEYLEN,
+          HASH,
           (err, derivedKey) => {
-            if (err) throw err;
+            if (err)
+              return res
+                .status(500)
+                .json(new ErrorRes("Something went wrong."));
           }
         )
       ).toString("hex");
@@ -74,17 +66,13 @@ signUp.post("/", async (req, res) => {
       const response = await user.save();
 
       return res.json({
-        status: true,
-        response: "User created Successfully",
-        email: response.email,
-        username: response.username,
-        imageUrl: response.imageUrl,
-        token: response.token,
+        message: "User created Successfully",
+        response: new UserRes(response),
       });
     }
   } catch (error) {
     console.log(error);
-    res.json({ status: false });
+    return res.status(500).json(new ErrorRes("Something went wrong."));
   }
 });
 

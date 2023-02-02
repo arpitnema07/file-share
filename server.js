@@ -9,6 +9,9 @@ import login from "./routes/login.js";
 import logout from "./routes/logout.js";
 import images from "./routes/images.js";
 import uploadProfile from "./routes/uploadProfile.js";
+import addNote from "./routes/addNote.js";
+import getNote from "./routes/getNote.js";
+import getAllNotes from "./routes/getAllNotes.js";
 
 const app = express();
 
@@ -53,6 +56,15 @@ app.use("/api/images", images);
 
 /** 10. Upload Profile Route */
 app.use("/api/uploadProfile", uploadProfile);
+
+/** 11. NOTES ADD ROUTE */
+app.use("/api/addNote", addNote);
+
+/** 12. Get Note Route */
+app.use("/api/getNote", getNote);
+
+/** 12. Get Note Route */
+app.use("/api/getAllNotes", getAllNotes);
 
 function normalizePort(val) {
   const port = parseInt(val, 10);

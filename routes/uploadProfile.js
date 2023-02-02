@@ -34,13 +34,8 @@ uploadProfile.post("/", (req, res) => {
     // getting email,username,pass and checking them
     console.log("Body");
     console.log(req.body);
-    const { email, access_token } = req.body;
-    if (
-      email == null ||
-      email == "" ||
-      access_token == null ||
-      access_token == ""
-    ) {
+    const { id, access_token } = req.body;
+    if (id == null || id == "" || access_token == null || access_token == "") {
       return res.json({
         status: false,
         response: "Authentication failed.",
@@ -57,7 +52,7 @@ uploadProfile.post("/", (req, res) => {
       imageUrl = process.env.URL + "/api/images/" + req.file.filename;
     }
     try {
-      const user = await User.find({ email: email });
+      const user = await User.find({ _id: id });
       if (user.length > 0) {
         if (user[0].access_token == access_token) {
           user[0].profileImage = imageUrl;
@@ -66,6 +61,7 @@ uploadProfile.post("/", (req, res) => {
           return res.json({
             status: true,
             response: "User created Successfully",
+            id: response._id,
             email: response.email,
             username: response.username,
             imageUrl: response.imageUrl,
