@@ -20,6 +20,7 @@ images.get("/:filename", async (req, res) => {
         err: "No file exists",
       });
     }
+    console.log(file.contentType);
     if (
       file.contentType === "image/jpg" ||
       file.contentType === "image/jpeg" ||

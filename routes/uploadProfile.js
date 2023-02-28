@@ -50,11 +50,10 @@ uploadProfile.post("/", (req, res) => {
     try {
       const user = await User.find({ _id: id });
       if (user.length > 0) {
-        console.log(user[0]);
         if (user[0].token == access_token) {
           user[0].imageUrl = imageUrl;
           const response = await user[0].save();
-
+          console.log(response);
           return res.json({
             message: "Profile Updated!",
             response: new UserRes(response),
