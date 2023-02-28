@@ -20,9 +20,16 @@ images.get("/:filename", async (req, res) => {
         err: "No file exists",
       });
     }
-    // Read output to browser
-    const readstream = gfs.createReadStream(file._id);
-    readstream.pipe(res);
+    if (
+      file.contentType === "image/jpg" ||
+      file.contentType === "image/jpeg" ||
+      file.contentType === "image/png"
+    ) {
+      const readStream = gridfsBucket.openDownloadStream(file._id);
+      readStream.pipe(res);
+    } else {
+      return res.status(404).send("File not an image");
+    }
   });
 });
 export default images;
