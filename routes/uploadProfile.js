@@ -2,9 +2,11 @@ import dotenv from "dotenv";
 import express from "express";
 import path from "path";
 import { GridFsStorage } from "multer-gridfs-storage";
-import crypto, { pbkdf2Sync } from "crypto";
 import multer from "multer";
 import User from "../models/user.js";
+
+import UserRes from "../models/user_res.js";
+import ErrorRes from "../models/error_res.js";
 
 dotenv.config();
 const uploadProfile = express.Router();
@@ -36,52 +38,38 @@ uploadProfile.post("/", (req, res) => {
     console.log(req.body);
     const { id, access_token } = req.body;
     if (id == null || id == "" || access_token == null || access_token == "") {
-      return res.json({
-        status: false,
-        response: "Authentication failed.",
-      });
+      return res.status(400).json(new ErrorRes("Required fields are missing."));
     }
     // checking Image url
     let imageUrl;
     if (!req.file) {
-      return res.json({
-        status: false,
-        response: "File not found.",
-      });
+      return res.status(400).json(new ErrorRes("File not Found!"));
     } else {
       imageUrl = process.env.URL + "/api/images/" + req.file.filename;
     }
     try {
       const user = await User.find({ _id: id });
       if (user.length > 0) {
-        if (user[0].access_token == access_token) {
-          user[0].profileImage = imageUrl;
+        console.log(user[0]);
+        if (user[0].token == access_token) {
+          user[0].imageUrl = imageUrl;
           const response = await user[0].save();
 
           return res.json({
-            status: true,
-            response: "User created Successfully",
-            id: response._id,
-            email: response.email,
-            username: response.username,
-            imageUrl: response.imageUrl,
-            token: response.token,
+            message: "Profile Updated!",
+            response: new UserRes(response),
           });
         } else {
-          return res.json({
-            status: false,
-            response: "Authentication failed.",
-          });
+          return res.status(401).json(new ErrorRes("Authentication failed!"));
         }
       } else {
-        return res.json({
-          status: false,
-          response: "User Not Found.",
-        });
+        return res
+          .status(400)
+          .json(new ErrorRes("User does not exist, Create a new account."));
       }
     } catch (error) {
       console.log(error);
-      res.json({ status: false });
+      return res.status(404).json(new ErrorRes("Something went wrong."));
     }
   });
 });
