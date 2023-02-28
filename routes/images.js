@@ -21,7 +21,7 @@ images.get("/:filename", async (req, res) => {
       });
     }
     // Read output to browser
-    const readstream = gridfsBucket.openDownloadStream(file._id);
+    const readstream = gfs.createReadStream(file._id);
     readstream.pipe(res);
   });
 });
