@@ -28,7 +28,6 @@ getAllNotes.get("/", async (req, res) => {
         const response = await Note.find({ user_id: user_id });
 
         return res.json({
-          size: response.length,
           response: response,
         });
       } else {
