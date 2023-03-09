@@ -16,6 +16,8 @@ addNote.post("/", async (req, res) => {
   const access_token = req.headers["access_token"];
   const user_id = req.headers["user_id"];
   const { title, text } = req.body;
+  console.log("t: " + access_token);
+  console.log("tu: " + user_id);
   if (
     user_id == null ||
     user_id == "" ||

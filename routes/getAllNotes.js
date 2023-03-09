@@ -15,6 +15,7 @@ const getAllNotes = express.Router();
 getAllNotes.get("/", async (req, res) => {
   const access_token = req.headers["access_token"];
   const user_id = req.headers["user_id"];
+  console.log("Hey");
   try {
     const user = await User.findById(user_id);
     if (user != null) {
@@ -26,10 +27,10 @@ getAllNotes.get("/", async (req, res) => {
       ) {
         const user_id = user._id;
         const response = await Note.find({ user_id: user_id });
-
-        return res.json({
-          response: response,
-        });
+        if (response.length <= 0)
+          return res.status(401).json(new ErrorRes("No Notes Found!"));
+        console.log(response);
+        return res.json(response);
       } else {
         return res.status(401).json(new ErrorRes("Authentication failed."));
       }
