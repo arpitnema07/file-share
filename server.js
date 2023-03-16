@@ -12,6 +12,9 @@ import uploadProfile from "./routes/uploadProfile.js";
 import addNote from "./routes/addNote.js";
 import getNote from "./routes/getNote.js";
 import getAllNotes from "./routes/getAllNotes.js";
+import deleteNote from "./routes/deleteNote.js";
+import deleteNotes from "./routes/deleteNotes.js";
+import editNote from "./routes/editNote.js";
 
 const app = express();
 
@@ -63,8 +66,17 @@ app.use("/api/addNote", addNote);
 /** 12. Get Note Route */
 app.use("/api/getNote", getNote);
 
-/** 12. Get Note Route */
+/** 13. Get Note Route */
 app.use("/api/getAllNotes", getAllNotes);
+
+/** 14. Delete Note Route */
+app.use("/api/deleteNote", deleteNote);
+
+/** 15. Delete Multiple Note Route */
+app.use("/api/deleteNotes", deleteNotes);
+
+/** 16. Edit Note Route */
+app.use("/api/editNote", editNote);
 
 function normalizePort(val) {
   const port = parseInt(val, 10);

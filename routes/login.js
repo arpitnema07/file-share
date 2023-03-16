@@ -22,7 +22,7 @@ login.post("/", async (req, res) => {
   if (email == null || email == "" || pass == null || pass == "") {
     return res.status(400).json(new ErrorRes("Required fields are missing."));
   }
-
+  console.log(email + " " + pass);
   try {
     const user = await User.findOne({ email: email });
     if (!user) {
