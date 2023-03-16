@@ -74,7 +74,7 @@ editNote.post("/", async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    return res.status(404).json(new ErrorRes("Something went wrong."));
+    return res.status(404).json(new ErrorRes("Something went wrong." + error));
   }
 });
 
