@@ -30,7 +30,14 @@ editNote.post("/", async (req, res) => {
         new ErrorRes("Authentication failed, Required fields are missing.")
       );
   }
-  if (title == null || title == "" || text == null || text == "") {
+  if (
+    title == null ||
+    title == "" ||
+    text == null ||
+    text == "" ||
+    note_id == null ||
+    note_id == ""
+  ) {
     return res.status(401).json(new ErrorRes("Note Details missing!"));
   }
   try {
@@ -48,10 +55,10 @@ editNote.post("/", async (req, res) => {
           if (note.user_id == user_id) {
             note.title = title;
             note.text = text;
-            const res = await note.save();
-            console.log(res);
+            const resp = await note.save();
+            console.log(resp);
             return res.json({
-              response: res,
+              response: resp,
               message: "Note edited successfully.",
             });
           } else {
