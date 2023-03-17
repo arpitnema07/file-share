@@ -12,10 +12,11 @@ const editNote = express.Router();
  * @returns note object if saved else error
  * @description edit a note and save it to the database
  */
-editNote.post("/", async (req, res) => {
+editNote.post("/:note_id", async (req, res) => {
   const access_token = req.headers["access_token"];
   const user_id = req.headers["user_id"];
-  const { title, text, note_id } = req.body;
+  const note_id = req.params.note_id;
+  const { title, text } = req.body;
   console.log("t: " + access_token);
   console.log("tu: " + user_id);
   if (
@@ -56,6 +57,7 @@ editNote.post("/", async (req, res) => {
             note.title = title;
             note.text = text;
             const resp = await note.save();
+            console.error("Heerereree");
             console.log(resp);
             return res.json({
               response: resp,
