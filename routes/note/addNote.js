@@ -15,7 +15,7 @@ const addNote = express.Router();
 addNote.post("/", async (req, res) => {
   const access_token = req.headers["access_token"];
   const user_id = req.headers["user_id"];
-  const { title, text } = req.body;
+  const { title, text, isArchived } = req.body;
   console.log("t: " + access_token);
   console.log("tu: " + user_id);
   if (
@@ -30,7 +30,14 @@ addNote.post("/", async (req, res) => {
         new ErrorRes("Authentication failed, Required fields are missing.")
       );
   }
-  if (title == null || title == "" || text == null || text == "") {
+  if (
+    title == null ||
+    title == "" ||
+    text == null ||
+    text == "" ||
+    isArchived == null ||
+    isArchived == ""
+  ) {
     return res.status(401).json(new ErrorRes("Note Details missing!"));
   }
   try {
@@ -49,12 +56,13 @@ addNote.post("/", async (req, res) => {
           user_id,
           title,
           text,
+          isArchived,
         });
         const response = await note.save();
         console.log(response);
         return res.json({
           response: response,
-          message: "Note added successfully.",
+          message: "Note added successfully...",
         });
       } else {
         return res.status(401).json(new ErrorRes("Authentication failed."));

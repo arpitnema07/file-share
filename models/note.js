@@ -8,6 +8,7 @@ const noteSchema = new Schema(
     user_id: { type: String, required: true },
     title: { type: String, required: true },
     text: { type: String, required: true },
+    isArchived: { type: Boolean, required: true },
     isMedia: { type: Boolean, required: false },
     files: [
       {

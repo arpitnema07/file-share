@@ -6,6 +6,7 @@ class UserRes {
     this.imageUrl = user.imageUrl;
     this.token = user.token;
     this.files = user.files;
+    this.isMedia = user.isMedia;
   }
 }
 
