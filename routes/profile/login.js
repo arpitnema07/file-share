@@ -3,7 +3,7 @@ import crypto, { pbkdf2Sync } from "crypto";
 import User from "../../models/user.js";
 import UserRes from "../../models/user_res.js";
 import ErrorRes from "../../models/error_res.js";
-import { HASH, ITERATIONS, KEYLEN } from "../utils/constants.js";
+import { HASH, ITERATIONS, KEYLEN } from "../../utils/constants.js";
 
 const login = express.Router();
 
