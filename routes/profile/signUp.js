@@ -1,10 +1,10 @@
 import dotenv from "dotenv";
 import express from "express";
 import crypto, { pbkdf2Sync } from "crypto";
-import User from "../models/user.js";
-import ErrorRes from "../models/error_res.js";
-import UserRes from "../models/user_res.js";
-import { HASH, ITERATIONS, KEYLEN } from "../utils/constants.js";
+import User from "../../models/user.js";
+import ErrorRes from "../../models/error_res.js";
+import UserRes from "../../models/user_res.js";
+import { HASH, ITERATIONS, KEYLEN } from "../../utils/constants.js";
 
 dotenv.config();
 const signUp = express.Router();

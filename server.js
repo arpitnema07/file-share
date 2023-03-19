@@ -1,20 +1,27 @@
+//Main
 import express from "express";
 import http from "http";
 import connectDb from "./config/db.js";
+
 import uploadFile from "./routes/upload.js";
 import showFile from "./routes/showFile.js";
 import download from "./routes/download.js";
-import signUp from "./routes/signUp.js";
-import login from "./routes/login.js";
-import logout from "./routes/logout.js";
 import images from "./routes/images.js";
-import uploadProfile from "./routes/uploadProfile.js";
-import addNote from "./routes/addNote.js";
-import getNote from "./routes/getNote.js";
-import getAllNotes from "./routes/getAllNotes.js";
-import deleteNote from "./routes/deleteNote.js";
-import deleteNotes from "./routes/deleteNotes.js";
-import editNote from "./routes/editNote.js";
+
+//Profile
+import signUp from "./routes/profile/signUp.js";
+import login from "./routes/profile/login.js";
+import logout from "./routes/profile/logout.js";
+import uploadProfile from "./routes/profile/uploadProfile.js";
+import editProfile from "./routes/profile/editProfile.js";
+
+// Note
+import addNote from "./routes/note/addNote.js";
+import getNote from "./routes/note/getNote.js";
+import getAllNotes from "./routes/note/getAllNotes.js";
+import deleteNote from "./routes/note/deleteNote.js";
+import deleteNotes from "./routes/note/deleteNotes.js";
+import editNote from "./routes/note/editNote.js";
 
 const app = express();
 
@@ -77,6 +84,9 @@ app.use("/api/deleteNotes", deleteNotes);
 
 /** 16. Edit Note Route */
 app.use("/api/editNote", editNote);
+
+/** 17. Edit Profile Route */
+app.use("/api/editProfile", editProfile);
 
 function normalizePort(val) {
   const port = parseInt(val, 10);
