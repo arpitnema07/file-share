@@ -15,7 +15,7 @@ const deleteNotes = express.Router();
 deleteNotes.delete("/", async (req, res) => {
   const access_token = req.headers["access_token"];
   const user_id = req.headers["user_id"];
-  const { note_ids } = req.body;
+  const note_ids = req.query.note_ids.split(",");
 
   if (
     user_id == null ||
