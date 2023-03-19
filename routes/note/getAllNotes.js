@@ -1,7 +1,7 @@
 import express from "express";
-import ErrorRes from "../models/error_res.js";
-import Note from "../models/note.js";
-import User from "../models/user.js";
+import ErrorRes from "../../models/error_res.js";
+import Note from "../../models/note.js";
+import User from "../../models/user.js";
 
 const getAllNotes = express.Router();
 

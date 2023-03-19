@@ -5,8 +5,8 @@ import { GridFsStorage } from "multer-gridfs-storage";
 import multer from "multer";
 import User from "../models/user.js";
 
-import UserRes from "../models/user_res.js";
-import ErrorRes from "../models/error_res.js";
+import UserRes from "../../models/user_res.js";
+import ErrorRes from "../../models/error_res.js";
 
 dotenv.config();
 const editProfile = express.Router();

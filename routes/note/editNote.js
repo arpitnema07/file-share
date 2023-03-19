@@ -1,8 +1,8 @@
 import express from "express";
 import mongoose from "mongoose";
-import User from "../models/user.js";
-import Note from "../models/note.js";
-import ErrorRes from "../models/error_res.js";
+import User from "../../models/user.js";
+import Note from "../../models/note.js";
+import ErrorRes from "../../models/error_res.js";
 
 const editNote = express.Router();
 

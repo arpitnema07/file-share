@@ -1,6 +1,6 @@
 import express from "express";
-import ErrorRes from "../models/error_res.js";
-import User from "../models/user.js";
+import ErrorRes from "../../models/error_res.js";
+import User from "../../models/user.js";
 
 const logout = express.Router();
 
