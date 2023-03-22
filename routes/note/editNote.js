@@ -15,10 +15,12 @@ const editNote = express.Router();
 editNote.post("/:note_id", async (req, res) => {
   const access_token = req.headers["access_token"];
   const user_id = req.headers["user_id"];
+  console.log(req.params);
   const note_id = req.params.note_id;
   const { title, text } = req.body;
   console.log("t: " + access_token);
   console.log("tu: " + user_id);
+  console.log(title + text);
   if (
     user_id == null ||
     user_id == "" ||
@@ -31,14 +33,7 @@ editNote.post("/:note_id", async (req, res) => {
         new ErrorRes("Authentication failed, Required fields are missing.")
       );
   }
-  if (
-    title == null ||
-    title == "" ||
-    text == null ||
-    text == "" ||
-    note_id == null ||
-    note_id == ""
-  ) {
+  if (note_id == null || note_id == "") {
     return res.status(401).json(new ErrorRes("Note Details missing!"));
   }
   try {
@@ -54,8 +49,16 @@ editNote.post("/:note_id", async (req, res) => {
         const note = await Note.findById(note_id);
         if (note != null) {
           if (note.user_id == user_id) {
-            note.title = title;
-            note.text = text;
+            if (title != null || title != "") {
+              note.title = title;
+            } else {
+              note.title = note.title;
+            }
+            if (text != null || text != "") {
+              note.text = text;
+            } else {
+              note.text = note.text;
+            }
             const resp = await note.save();
             console.error("Heerereree");
             console.log(resp);

@@ -3,7 +3,7 @@ import User from "../../models/user.js";
 import Note from "../../models/note.js";
 import ErrorRes from "../../models/error_res.js";
 
-const deleteNotes = express.Router();
+const archiveNotes = express.Router();
 
 /**
  * @headers access_token & user_id
@@ -11,7 +11,7 @@ const deleteNotes = express.Router();
  * @returns success message if notes deleted else error
  * @description deletes multiple notes from the database
  */
-deleteNotes.delete("/", async (req, res) => {
+archiveNotes.post("/", async (req, res) => {
   const access_token = req.headers["access_token"];
   const user_id = req.headers["user_id"];
   console.log("query:" + JSON.stringify(req.query));
@@ -49,9 +49,16 @@ deleteNotes.delete("/", async (req, res) => {
           user_id: user_id,
         });
         if (notes.length > 0) {
-          await Note.deleteMany({ _id: { $in: note_ids }, user_id: user_id });
+          await Note.updateMany(
+            { _id: { $in: note_ids }, user_id: user_id },
+            {
+              $set: {
+                isArchived: true,
+              },
+            }
+          );
           return res.json({
-            message: "Notes deleted successfully.",
+            message: "Notes Archived successfully.",
           });
         } else {
           return res.status(404).json(new ErrorRes("Notes not found."));
@@ -68,4 +75,4 @@ deleteNotes.delete("/", async (req, res) => {
   }
 });
 
-export default deleteNotes;
+export default archiveNotes;

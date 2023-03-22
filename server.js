@@ -22,6 +22,7 @@ import getAllNotes from "./routes/note/getAllNotes.js";
 import deleteNote from "./routes/note/deleteNote.js";
 import deleteNotes from "./routes/note/deleteNotes.js";
 import editNote from "./routes/note/editNote.js";
+import archiveNotes from "./routes/note/archiveNotes.js";
 
 const app = express();
 
@@ -87,6 +88,9 @@ app.use("/api/editNote", editNote);
 
 /** 17. Edit Profile Route */
 app.use("/api/editProfile", editProfile);
+
+/** 18. Archive Notes Route */
+app.use("/api/archiveNotes", archiveNotes);
 
 function normalizePort(val) {
   const port = parseInt(val, 10);

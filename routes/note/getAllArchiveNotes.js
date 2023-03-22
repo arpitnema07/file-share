@@ -3,7 +3,7 @@ import ErrorRes from "../../models/error_res.js";
 import Note from "../../models/note.js";
 import User from "../../models/user.js";
 
-const getAllNotes = express.Router();
+const getAllArchiveNotes = express.Router();
 
 /**
  * @headers access_token & user_id
@@ -12,7 +12,7 @@ const getAllNotes = express.Router();
  * @description gets note from the database using the note id
  */
 
-getAllNotes.get("/", async (req, res) => {
+getAllArchiveNotes.get("/", async (req, res) => {
   const access_token = req.headers["access_token"];
   const user_id = req.headers["user_id"];
   console.log("Hey");
@@ -28,7 +28,7 @@ getAllNotes.get("/", async (req, res) => {
         const user_id = user._id;
         const response = await Note.find({
           user_id: user_id,
-          isArchived: false,
+          isArchived: true,
         });
         if (response.length <= 0)
           return res.status(401).json(new ErrorRes("No Notes Found!"));
@@ -46,4 +46,4 @@ getAllNotes.get("/", async (req, res) => {
   }
 });
 
-export default getAllNotes;
+export default getAllArchiveNotes;
